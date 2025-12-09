@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registros - BiblioLiebre Admin</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+        header {
+            background-color: #667eea;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .user-info {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .btn-logout {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        nav {
+            background-color: #333;
+            padding: 10px 20px;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-right: 20px;
+            padding: 8px 16px;
+            border-radius: 5px;
+        }
+        nav a:hover {
+            background-color: #555;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        .section {
+            background: white;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        .btn {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .btn:hover {
+            background-color: #218838;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #667eea;
+            color: white;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #007bff 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .stat-card h3 {
+            font-size: 14px;
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+        .stat-card .value {
+            font-size: 32px;
+            font-weight: bold;
+        }
+        .filtro-fechas {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+        .filtro-fechas input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .filtro-fechas button {
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">BiblioLiebre - Registros</div>
+        <div style="font-size: 12px; opacity: 0.9; color: white;">Sassone - Somosa - Juarez</div>
+        <div class="user-info">
+            <span>Usuario: <%= usuario.nombre %></span>
+            <form action="/admin/logout" method="POST" style="display: inline;">
+                <button type="submit" class="btn-logout">Cerrar sesión</button>
+            </form>
+        </div>
+    </header>
+    
+    <nav>
+        <a href="/admin/dashboard">Dashboard</a>
+        <a href="/admin/registros">Registros</a>
+        <a href="/">Inicio Cliente</a>
+    </nav>
+    
+    <div class="container">
+        <div class="section">
+            <h2>Estadísticas Generales</h2>
+            <div class="stats-grid" id="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Ventas</h3>
+                    <div class="value" id="stat-ventas">-</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Monto Total</h3>
+                    <div class="value" id="stat-monto">$-</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Productos Activos</h3>
+                    <div class="value" id="stat-activos">-</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Productos Inactivos</h3>
+                    <div class="value" id="stat-inactivos">-</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Top 10 Productos Más Vendidos</h2>
+            <table id="tabla-productos">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Título</th>
+                        <th>Tipo</th>
+                        <th>Total Vendido</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        
+        <div class="section">
+            <h2>Top 10 Ventas Más Caras</h2>
+            <table id="tabla-ventas">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Cliente</th>
+                        <th>Fecha</th>
+                        <th>Total</th>
+                        <th>Productos</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        
+        <div class="section">
+            <h2>Logs de Inicio de Sesión</h2>
+            <div class="filtro-fechas">
+                <label>Desde:</label>
+                <input type="date" id="fecha-desde">
+                <label>Hasta:</label>
+                <input type="date" id="fecha-hasta">
+                <button onclick="filtrarLogs()">Filtrar</button>
+                <button onclick="limpiarFiltro()">Limpiar</button>
+            </div>
+            <table id="tabla-logs">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Usuario</th>
+                        <th>Email</th>
+                        <th>Fecha</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        
+        <div class="section">
+            <h2>Estadísticas Adicionales</h2>
+            <table id="tabla-estadisticas">
+                <thead>
+                    <tr>
+                        <th>Métrica</th>
+                        <th>Valor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Promedio de venta</td>
+                        <td id="promedio-venta">-</td>
+                    </tr>
+                    <tr>
+                        <td>Total de productos</td>
+                        <td id="total-productos">-</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <button class="btn" onclick="descargarExcel()">Descargar Registros en Excel</button>
+    </div>
+    
+    <script>
+        const API_BASE = '/api';
+        
+        async function cargarDatos() {
+            await Promise.all([
+                cargarProductosMasVendidos(),
+                cargarVentasMasCaras(),
+                cargarLogsLogin(),
+                cargarEstadisticas()
+            ]);
+        }
+        
+        async function cargarProductosMasVendidos() {
+            try {
+                const response = await fetch(`${API_BASE}/registros/productos-mas-vendidos`);
+                const productos = await response.json();
+                
+                const tbody = document.querySelector('#tabla-productos tbody');
+                tbody.innerHTML = '';
+                
+                productos.forEach(p => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${p.id}</td>
+                        <td>${p.titulo}</td>
+                        <td>${p.tipo}</td>
+                        <td>${p.totalVendido}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (error) {
+                console.error('Error al cargar productos más vendidos:', error);
+            }
+        }
+        
+        async function cargarVentasMasCaras() {
+            try {
+                const response = await fetch(`${API_BASE}/registros/ventas-mas-caras`);
+                const ventas = await response.json();
+                
+                const tbody = document.querySelector('#tabla-ventas tbody');
+                tbody.innerHTML = '';
+                
+                ventas.forEach(v => {
+                    const fecha = new Date(v.fecha).toLocaleDateString('es-AR');
+                    const productos = v.items.map(i => `${i.cantidad}x ${i.titulo}`).join(', ');
+                    
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${v.id}</td>
+                        <td>${v.clienteNombre}</td>
+                        <td>${fecha}</td>
+                        <td>$${parseFloat(v.total).toFixed(2)}</td>
+                        <td>${productos}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (error) {
+                console.error('Error al cargar ventas más caras:', error);
+            }
+        }
+        
+        async function cargarLogsLogin(fechaDesde = null, fechaHasta = null) {
+            try {
+                let url = `${API_BASE}/registros/logs-login`;
+                const params = new URLSearchParams();
+                if (fechaDesde) params.append('desde', fechaDesde);
+                if (fechaHasta) params.append('hasta', fechaHasta);
+                if (params.toString()) url += '?' + params.toString();
+                
+                const response = await fetch(url);
+                const logs = await response.json();
+                
+                const tbody = document.querySelector('#tabla-logs tbody');
+                tbody.innerHTML = '';
+                
+                logs.forEach(log => {
+                    const fecha = new Date(log.fecha).toLocaleString('es-AR');
+                    const usuario = log.Usuario || {};
+                    
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${log.id}</td>
+                        <td>${usuario.nombre || 'N/A'}</td>
+                        <td>${usuario.email || 'N/A'}</td>
+                        <td>${fecha}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (error) {
+                console.error('Error al cargar logs de login:', error);
+            }
+        }
+        
+        async function cargarEstadisticas() {
+            try {
+                const response = await fetch(`${API_BASE}/registros/estadisticas`);
+                const stats = await response.json();
+                
+                document.getElementById('stat-ventas').textContent = stats.ventas.total;
+                document.getElementById('stat-monto').textContent = '$' + parseFloat(stats.ventas.montoTotal).toFixed(2);
+                document.getElementById('stat-activos').textContent = stats.productos.activos;
+                document.getElementById('stat-inactivos').textContent = stats.productos.inactivos;
+                
+                const promedio = stats.ventas.total > 0 
+                    ? (parseFloat(stats.ventas.montoTotal) / stats.ventas.total).toFixed(2)
+                    : '0.00';
+                document.getElementById('promedio-venta').textContent = '$' + promedio;
+                document.getElementById('total-productos').textContent = stats.productos.total;
+            } catch (error) {
+                console.error('Error al cargar estadísticas:', error);
+            }
+        }
+        
+        function filtrarLogs() {
+            const desde = document.getElementById('fecha-desde').value;
+            const hasta = document.getElementById('fecha-hasta').value;
+            cargarLogsLogin(desde || null, hasta || null);
+        }
+        
+        function limpiarFiltro() {
+            document.getElementById('fecha-desde').value = '';
+            document.getElementById('fecha-hasta').value = '';
+            cargarLogsLogin();
+        }
+        
+        async function descargarExcel() {
+            try {
+                // Cargar todos los datos
+                const [productos, ventas, logs, stats] = await Promise.all([
+                    fetch(`${API_BASE}/registros/productos-mas-vendidos`).then(r => r.json()),
+                    fetch(`${API_BASE}/registros/ventas-mas-caras`).then(r => r.json()),
+                    fetch(`${API_BASE}/registros/logs-login`).then(r => r.json()),
+                    fetch(`${API_BASE}/registros/estadisticas`).then(r => r.json())
+                ]);
+                
+                // Verificar si XLSX está disponible
+                if (typeof XLSX === 'undefined') {
+                    alert('La librería XLSX no está cargada. Cargando...');
+                    const script = document.createElement('script');
+                    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+                    script.onload = () => descargarExcel();
+                    document.head.appendChild(script);
+                    return;
+                }
+                
+                const wb = XLSX.utils.book_new();
+                
+                // Hoja 1: Productos más vendidos
+                const wsProductos = XLSX.utils.json_to_sheet(productos);
+                XLSX.utils.book_append_sheet(wb, wsProductos, "Productos Más Vendidos");
+                
+                // Hoja 2: Ventas más caras
+                const ventasSimplificadas = ventas.map(v => ({
+                    ID: v.id,
+                    Cliente: v.clienteNombre,
+                    Fecha: new Date(v.fecha).toLocaleDateString('es-AR'),
+                    Total: parseFloat(v.total).toFixed(2),
+                    Productos: v.items.map(i => `${i.cantidad}x ${i.titulo}`).join(', ')
+                }));
+                const wsVentas = XLSX.utils.json_to_sheet(ventasSimplificadas);
+                XLSX.utils.book_append_sheet(wb, wsVentas, "Ventas Más Caras");
+                
+                // Hoja 3: Logs de login
+                const logsSimplificados = logs.map(l => ({
+                    ID: l.id,
+                    Usuario: l.Usuario?.nombre || 'N/A',
+                    Email: l.Usuario?.email || 'N/A',
+                    Fecha: new Date(l.fecha).toLocaleString('es-AR'),
+                    IP: l.ip || 'N/A'
+                }));
+                const wsLogs = XLSX.utils.json_to_sheet(logsSimplificados);
+                XLSX.utils.book_append_sheet(wb, wsLogs, "Logs de Login");
+                
+                // Hoja 4: Estadísticas
+                const wsStats = XLSX.utils.json_to_sheet([
+                    { Métrica: 'Total Ventas', Valor: stats.ventas.total },
+                    { Métrica: 'Monto Total', Valor: parseFloat(stats.ventas.montoTotal).toFixed(2) },
+                    { Métrica: 'Productos Activos', Valor: stats.productos.activos },
+                    { Métrica: 'Productos Inactivos', Valor: stats.productos.inactivos },
+                    { Métrica: 'Total Productos', Valor: stats.productos.total },
+                    { Métrica: 'Promedio Venta', Valor: (parseFloat(stats.ventas.montoTotal) / (stats.ventas.total || 1)).toFixed(2) }
+                ]);
+                XLSX.utils.book_append_sheet(wb, wsStats, "Estadísticas");
+                
+                // Descargar
+                const fecha = new Date().toISOString().split('T')[0];
+                XLSX.writeFile(wb, `registros-biblioliebre-${fecha}.xlsx`);
+            } catch (error) {
+                console.error('Error al descargar Excel:', error);
+                alert('Error al generar el archivo Excel. Asegurate de que la librería XLSX esté cargada.');
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', cargarDatos);
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</body>
+</html>
+

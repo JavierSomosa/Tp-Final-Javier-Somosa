@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>BiblioLiebre - Productos</title>
+  <link rel="stylesheet" href="css/estilos.css" />
+  <link rel="apple-touch-icon" sizes="180x180" href="images/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="images/favicon/favicon-16x16.png">
+  <link rel="manifest" href="images/favicon/site.webmanifest">
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="logo">BiblioLiebre
+      <button id="toggle-theme" class="btn-logo"></button>
+    </div>
+    <nav>
+      <a href="index.html">Inicio</a>
+      <a class="activo">Productos</a>
+      <a href="carrito.html">Carrito</a>
+      <!-- <a href="ticket.html">Ticket</a> -->
+    </nav>
+    <div id="nombre-usuario"></div>
+  </header>
+  <div class="autores" style="text-align: center; padding: 10px; font-size: 12px; color: var(--text-soft);">
+    Sassone - Somosa - Juarez
+  </div>
+
+  <main>
+    <section style="padding: 20px 60px;">
+      <button onclick="filtrar('libro')">Libros</button>
+      <button onclick="filtrar('pelicula')">Películas</button>
+    </section>
+
+    <section class="grid-productos" id="lista-productos">
+      <!-- acá JS mete las tarjetas -->
+    </section>
+
+    <section id="paginacion" style="padding: 20px 60px; text-align: center;">
+      <!-- acá JS mete los botones de paginación -->
+    </section>
+  </main>
+
+  <script src="js/main.js"></script>
+  <script src="js/productos.js"></script>
+</body>
+
+</html>

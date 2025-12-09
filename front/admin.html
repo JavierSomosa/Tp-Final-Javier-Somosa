@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin - BiblioLiebre</title>
+  <link rel="stylesheet" href="css/estilos.css" />
+</head>
+
+<body>
+  <header class="topbar-admin">
+    <div class="logo">BiblioLiebre
+      <button id="toggle-theme" class="btn-logo"></button>
+    </div>
+    <div class="topbar-admin-right">Inicio / Listado</div>
+    <a href="index.html">Inicio</a>
+  </header>
+
+  <main class="admin-main">
+    <section class="admin-tabla">
+      <h2>Listado de productos</h2>
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Título</th>
+            <th>Tipo</th>
+            <th>Precio</th>
+            <th>Fecha salida</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody id="admin-tbody"></tbody>
+      </table>
+    </section>
+
+    <aside class="admin-acciones">
+      <button class="admin-btn" onclick="alta()">ALTA</button>
+      <button class="admin-btn" onclick="baja()">BAJA</button>
+      <button class="admin-btn" onclick="modificar()">MODIF</button>
+    </aside>
+  </main>
+
+  <script src="/front/js/main.js"></script>
+  <script src="/front/js/admin.js"></script>
+
+</body>
+
+</html>

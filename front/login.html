@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login - BiblioLiebre</title>
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+
+<body>
+
+    <header class="topbar">
+        <div class="logo">BiblioLiebre
+            <button id="toggle-theme" class="btn-logo"></button>
+        </div>
+        <a href="index.html">Inicio</a>
+        <button id="toggle-theme">Cambiar Tema</button>
+    </header>
+
+    <main class="login-container">
+        <h1>Login</h1>
+
+        <form onsubmit="event.preventDefault(); login();">
+            <input id="login-email" type="email" placeholder="Correo" required>
+            <input id="login-pass" type="password" placeholder="Contraseña" required>
+            <p id="login-error" class="error"></p>
+            <button type="submit">Ingresar</button>
+        </form>
+        <button onclick="loginRapido()">Acceso rápido</button>
+    </main>
+
+    <script src="js/login.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>

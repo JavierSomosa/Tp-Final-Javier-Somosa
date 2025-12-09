@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - BiblioLiebre Admin</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .login-container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            max-width: 400px;
+            width: 100%;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+        .error {
+            color: red;
+            margin: 10px 0;
+            text-align: center;
+            font-size: 14px;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            background-color: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #5568d3;
+        }
+        .btn-rapido {
+            background-color: #28a745;
+        }
+        .btn-rapido:hover {
+            background-color: #218838;
+        }
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #667eea;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1>BiblioLiebre</h1>
+        <h2 style="text-align: center; margin-bottom: 20px; color: #666;">Panel Administrador</h2>
+        <p style="text-align: center; font-size: 12px; color: #999; margin-bottom: 20px;">Sassone - Somosa - Juarez</p>
+        
+        <% if (error) { %>
+            <p class="error"><%= error %></p>
+        <% } %>
+        
+        <form action="/admin/login" method="POST">
+            <input type="email" name="email" placeholder="Correo electrónico" required>
+            <input type="password" name="password" placeholder="Contraseña" required>
+            <button type="submit">Ingresar</button>
+        </form>
+        
+        <button class="btn-rapido" onclick="loginRapido()">Acceso rápido</button>
+        
+        <a href="/">Volver al inicio</a>
+    </div>
+    
+    <script>
+        function loginRapido() {
+            document.querySelector('input[name="email"]').value = "admin@admin.com";
+            document.querySelector('input[name="password"]').value = "1234";
+        }
+    </script>
+</body>
+</html>
+

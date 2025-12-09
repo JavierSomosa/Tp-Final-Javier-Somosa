@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>BiblioLiebre - Inicio</title>
+  <link rel="stylesheet" href="css/estilos.css" />
+  <link rel="apple-touch-icon" sizes="180x180" href="images/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="images/favicon/favicon-16x16.png">
+  <link rel="manifest" href="images/favicon/site.webmanifest">
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="logo">BiblioLiebre
+      <button id="toggle-theme" class="btn-logo"></button>
+    </div>
+    <nav>
+      <a class="activo">Inicio</a>
+      <!-- <a href="productos.html">Productos</a>
+      <a href="carrito.html">Carrito</a>
+      <a href="ticket.html">Ticket</a> -->
+    </nav>
+  </header>
+  <div class="autores" style="text-align: center; padding: 10px; font-size: 12px; color: var(--text-soft);">
+    Sassone - Somosa - Juarez
+  </div>
+
+  <main class="inicio">
+    <section class="inicio-imagen">
+      <h1>Tu historia empieza acá 📚🎬</h1>
+      <p>Libros y películas listos para que te los lleves en segundos.</p>
+    </section>
+
+    <section class="inicio-form">
+      <input id="nombreUsuario" type="text" placeholder="Escribe tu nombre" />
+      <p id="login-error" class="error"></p>
+      <button onclick="entrar()">ENTRAR</button>
+    </section>
+  </main>
+
+  <script src="js/main.js"></script>
+
+  <footer class="footer-admin">
+    <button class="btn-admin-footer" onclick="window.location.href='login.html'">Acceso Administrador</button>
+  </footer>
+</body>
+
+</html>

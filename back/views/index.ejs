@@ -1,0 +1,36 @@
+
+    <h1>Listado</h1>
+
+
+    <a href="Crear">Crear</a>
+    <% //if(true) %> 
+    <%=// %> 
+
+    
+
+    <%//console.log(productos); %>
+
+    <table>  
+        <thead class="thead-dark" >
+            <tr>
+                <th>ID</th>
+                <th >Titulo</th>
+                <th>Descripcion</th>
+                <th >Tipo</th>
+                <th>Estado</th>          
+                     
+            </tr>
+        </thead>
+        <tbody>
+            <%  productos.forEach((produ) => { %>
+            <tr>
+             <td> <%=   produ.id %> </td> 
+              <td> <%=   produ.titulo %> </td>
+              <td> <%= produ.descripcion %> </td>
+              <td> <%=   produ.tipo %> </td>
+              <td> <%=   produ.estado %> </td>
+              <td> <img src="<% produ.image %> " alt=""> </td>
+              </tr>
+            <% }); %>
+             </tbody> 
+    </table>

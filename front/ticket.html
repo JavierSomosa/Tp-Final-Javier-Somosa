@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Ticket</title>
+  <link rel="stylesheet" href="css/estilos.css" />
+  <link rel="apple-touch-icon" sizes="180x180" href="images/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="images/favicon/favicon-16x16.png">
+  <link rel="manifest" href="images/favicon/site.webmanifest">
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="logo">BiblioLiebre
+      <button id="toggle-theme" class="btn-logo"></button>
+    </div>
+    <nav>
+      <a class="activo">Ticket</a>
+    </nav>
+    <div id="nombre-usuario"></div>
+  </header>
+  <div class="autores" style="text-align: center; padding: 10px; font-size: 12px; color: var(--text-soft);">
+    Sassone - Somosa - Juarez
+  </div>
+
+  <main style="padding: 40px 60px;">
+    <section style="padding:24px; border-radius:16px; max-width:600px;">
+      <h2>Ticket de compra - BiblioLiebre</h2>
+      <p><strong>Cliente:</strong> <span id="ticket-usuario"></span></p>
+      <p><strong>Fecha:</strong> <span id="ticket-fecha"></span></p>
+
+      <h3>Productos</h3>
+      <ul id="ticket-lista"></ul>
+
+      <h3>Total: $ <span id="ticket-total"></span></h3>
+
+      <button onclick="nuevaCompra()">Nueva compra</button>
+      <button onclick="descargarPDF()">Descargar PDF</button>
+    </section>
+  </main>
+
+  <script src="js/main.js"></script>
+  <script src="js/ticket.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</body>
+
+</html>

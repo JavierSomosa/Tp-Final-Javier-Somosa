@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= editar ? 'Editar' : 'Crear' %> Producto - BiblioLiebre</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .error {
+            color: red;
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #ffe6e6;
+            border-radius: 5px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        label {
+            font-weight: bold;
+            color: #333;
+        }
+        input, select, textarea {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+        }
+        button {
+            padding: 12px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            color: #667eea;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .preview-image {
+            max-width: 200px;
+            max-height: 200px;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><%= editar ? 'Editar' : 'Crear' %> Producto</h1>
+        <p style="text-align: center; font-size: 12px; color: #999; margin-bottom: 20px;">Sassone - Somosa - Juarez</p>
+        
+        <% if (typeof error !== 'undefined' && error) { %>
+            <div class="error"><%= error %></div>
+        <% } %>
+        
+        <form action="<%= editar ? `/admin/productos/editar/${producto.id}` : '/admin/productos/crear' %>" method="POST" enctype="multipart/form-data">
+            <label for="titulo">Título *</label>
+            <input type="text" name="titulo" id="titulo" required 
+                   value="<%= producto ? producto.titulo : '' %>" 
+                   placeholder="Ej: El principito">
+            
+            <label for="tipo">Tipo *</label>
+            <select name="tipo" id="tipo" required>
+                <option value="">Seleccione un tipo</option>
+                <option value="libro" <%= producto && producto.tipo === 'libro' ? 'selected' : '' %>>Libro</option>
+                <option value="pelicula" <%= producto && producto.tipo === 'pelicula' ? 'selected' : '' %>>Película</option>
+            </select>
+            
+            <label for="descripcion">Descripción</label>
+            <textarea name="descripcion" id="descripcion" 
+                      placeholder="Ej: Un clásico sobre un niño y un zorro"><%= producto ? (producto.descripcion || '') : '' %></textarea>
+            
+            <label for="precio">Precio *</label>
+            <input type="number" name="precio" id="precio" step="0.01" required 
+                   value="<%= producto ? producto.precio : '' %>" 
+                   placeholder="Ej: 3500">
+            
+            <label for="fechaSalida">Fecha de Salida *</label>
+            <input type="date" name="fechaSalida" id="fechaSalida" required 
+                   value="<%= producto ? new Date(producto.fechaSalida).toISOString().split('T')[0] : '' %>">
+            
+            <label for="image">Imagen</label>
+            <input type="file" name="image" id="image" accept="image/*">
+            <% if (producto && producto.image) { %>
+                <div>
+                    <p>Imagen actual:</p>
+                    <img src="<%= producto.image %>" alt="Imagen actual" class="preview-image">
+                    <input type="hidden" name="image" value="<%= producto.image %>">
+                </div>
+            <% } %>
+            
+            <% if (editar) { %>
+                <div class="checkbox-group">
+                    <input type="checkbox" name="estado" id="estado" value="true" 
+                           <%= producto && producto.estado ? 'checked' : '' %>>
+                    <label for="estado">Producto activo</label>
+                </div>
+            <% } %>
+            
+            <button type="submit"><%= editar ? 'Guardar Cambios' : 'Crear Producto' %></button>
+        </form>
+        
+        <a href="/admin/dashboard">← Volver al dashboard</a>
+    </div>
+</body>
+</html>
