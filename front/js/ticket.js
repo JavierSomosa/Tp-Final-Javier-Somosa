@@ -54,7 +54,7 @@ function nuevaCompra() {
   localStorage.removeItem("carrito");
   localStorage.removeItem("totalCompra");
   localStorage.removeItem("ventaId");
-  window.location.href = "index.html";
+  window.location.href = "encuesta.html";
 }
 
 document.addEventListener("DOMContentLoaded", cargarTicket);

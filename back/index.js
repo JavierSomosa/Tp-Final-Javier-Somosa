@@ -70,6 +70,12 @@ app.use(session({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Para recibir los archivos y para levantar la ruta de encuesta
+app.use("/images", express.static(path.join(__dirname, "public", "images")));
+const encuestaRoutes = require("./routes/encuesta.routes");
+app.use("/api", encuestaRoutes);
+app.use(encuestaRoutes);
+
 // CORS - Permitir peticiones desde el frontend
 app.use((req, res, next) => {
   const origin = req.headers.origin;

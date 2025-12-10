@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Encuesta de Satisfacción</title>
+
+  <link rel="stylesheet" href="css/estilos.css" />
+
+  <link rel="apple-touch-icon" sizes="180x180" href="images/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="images/favicon/favicon-16x16.png">
+  <link rel="manifest" href="images/favicon/site.webmanifest">
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="logo">
+      BiblioLiebre
+      <button id="toggle-theme" class="btn-logo"></button>
+    </div>
+    <nav>
+      <a class="activo">Encuesta</a>
+    </nav>
+  </header>
+
+  <div class="autores" style="text-align:center; padding:10px; font-size:12px; color:var(--text-soft);">
+    Sassone - Somosa - Juarez
+  </div>
+
+  <main class="inicio" style="max-width: 600px; margin: 0 auto; padding: 30px;">
+    <h1 style="text-align:center;">Tu opinión nos importa ❤️</h1>
+    <p style="text-align:center; margin-bottom: 25px;">Contanos tu experiencia con BiblioLiebre</p>
+
+    <form id="encuestaForm" enctype="multipart/form-data" style="display:flex; flex-direction:column; gap:14px;">
+
+      <label>Email (opcional)
+        <input type="email" name="email" placeholder="tuemail@gmail.com" />
+      </label>
+
+      <label>Comentario
+        <textarea name="comentario" rows="4" placeholder="¿Cómo estuvo tu experiencia?"></textarea>
+      </label>
+
+      <label style="display:flex; align-items:center; gap:8px;">
+        <input type="checkbox" name="recomendar" />
+        ¿Recomendarías BiblioLiebre?
+      </label>
+
+      <label>Puntuación del servicio (0-10)
+        <input type="range" name="puntuacion" min="0" max="10" value="5" id="slider" />
+        <span id="sliderValue">5</span>
+      </label>
+
+      <label>Subir imagen (opcional)
+        <input type="file" name="imagen" accept="image/*" />
+      </label>
+
+      <button type="submit">Enviar encuesta</button>
+      <button type="button" id="omitir" class="btn-secundario">Omitir</button>
+    </form>
+  </main>
+
+  <!-- Modal -->
+  <div id="modal" class="modal" style="display:none;">
+    <div class="modal-contenido">
+      <p>¡Gracias por tu opinión! 🙌</p>
+      <button id="cerrarModal">Volver al inicio</button>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script src="js/encuesta.js"></script>
+</body>
+
+</html>

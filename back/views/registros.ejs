@@ -255,6 +255,14 @@
                         <td>Total de productos</td>
                         <td id="total-productos">-</td>
                     </tr>
+                    <tr>
+                    <td>Promedio de puntuación (Encuestas)</td>
+                    <td id="enc-promedio">-</td>
+                    </tr>
+                    <tr>
+                    <td>Total de encuestas recibidas</td>
+                    <td id="enc-total">-</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -371,6 +379,9 @@
                     : '0.00';
                 document.getElementById('promedio-venta').textContent = '$' + promedio;
                 document.getElementById('total-productos').textContent = stats.productos.total;
+                document.getElementById("enc-promedio").textContent = stats.encuestas.promedio ? stats.encuestas.promedio.toFixed(2) : "0.00";
+                document.getElementById("enc-total").textContent = stats.encuestas.total;
+                
             } catch (error) {
                 console.error('Error al cargar estadísticas:', error);
             }

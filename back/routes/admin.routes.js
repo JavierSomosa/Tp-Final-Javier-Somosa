@@ -1,5 +1,7 @@
 const express = require("express");
 const enrutador = express.Router();
+const registrosRoutes = require("./registros.routes");
+router.use("/registros", registrosRoutes);
 
 enrutador.get("/", (req, res) => {
   res.send("Funciona")
