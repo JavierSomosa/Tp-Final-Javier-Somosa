@@ -1,5 +1,27 @@
 const express = require("express");
 const app = express();
+// -------- CORS GLOBAL (DEBE IR BIEN ARRIBA) --------
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+
+  // Permitir acceso desde Live Server (puerto 5500)
+  if (origin && (
+    origin.includes("127.0.0.1:5500") ||
+    origin.includes("localhost:5500")
+  )) {
+    res.header("Access-Control-Allow-Origin", origin);
+    res.header("Access-Control-Allow-Credentials", "true");
+  }
+
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
+
+  next();
+});
 const path = require("path");
 const fs = require("fs");
 const port = 3000;
@@ -19,6 +41,7 @@ const Venta = require("./venta");
 const VentaProducto = require("./ventaproducto");
 const Usuario = require("./usuario");
 const LogLogin = require("./logLogin");
+const Encuesta = require("./encuesta");
 const sequelize = require("./db");
 const { Op } = require("sequelize");
 
@@ -125,6 +148,8 @@ Usuario.hasMany(LogLogin, { foreignKey: "usuarioId" });
     await VentaProducto.sync({ alter: true });
     await Usuario.sync({ alter: true });
     await LogLogin.sync({ alter: true });
+    const Encuesta = require("./encuesta");
+    await Encuesta.sync({ alter: true });
     console.log("Modelos sincronizados");
     
     // Crear usuario admin por defecto si no existe
@@ -785,17 +810,27 @@ app.get("/api/registros/logs-login", async (req, res) => {
   }
 });
 
+const { fn, col } = require("sequelize");
+
 // GET /api/registros/estadisticas - Estadísticas adicionales
 app.get("/api/registros/estadisticas", async (req, res) => {
   try {
-    // Estadística 1: Total de ventas y monto total
+    // Ventas
     const totalVentas = await Venta.count();
     const ventas = await Venta.findAll();
     const montoTotal = ventas.reduce((sum, v) => sum + parseFloat(v.total), 0);
 
-    // Estadística 2: Productos activos vs inactivos
+    // Productos
     const productosActivos = await Producto.count({ where: { estado: true } });
     const productosInactivos = await Producto.count({ where: { estado: false } });
+
+    // Encuestas
+    const promedioObj = await Encuesta.findOne({
+      attributes: [[fn("AVG", col("puntuacion")), "promedio"]]
+    });
+
+    const promedio = promedioObj?.dataValues?.promedio || 0;
+    const totalEncuestas = await Encuesta.count();
 
     res.json({
       ventas: {
@@ -806,8 +841,13 @@ app.get("/api/registros/estadisticas", async (req, res) => {
         activos: productosActivos,
         inactivos: productosInactivos,
         total: productosActivos + productosInactivos
+      },
+      encuestas: {
+        total: totalEncuestas,
+        promedio: Number(promedio).toFixed(2)
       }
     });
+
   } catch (error) {
     console.log("Error al obtener estadísticas:", error);
     res.status(500).json({ message: "Error interno: " + error.message });
