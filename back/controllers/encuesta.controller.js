@@ -42,13 +42,18 @@ exports.listarEncuestas = async (req, res) => {
       order: [["createdAt", "DESC"]]
     });
 
-    // Si es API → devolver JSON
+    // Si es API → JSON
     if (req.path.includes("/api")) {
       return res.json({ encuestas });
     }
 
-    // Si es vista admin → render
-    return res.render("asistencia", { encuestas });
+    // Si es vista admin → ahora enviamos las fechas también
+    return res.render("asistencia", { 
+      encuestas,
+      desde: desde || "",
+      hasta: hasta || ""
+    });
+
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Error al obtener encuestas" });

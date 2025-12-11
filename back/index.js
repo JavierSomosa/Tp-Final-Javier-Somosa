@@ -96,6 +96,8 @@ app.use(express.urlencoded({ extended: true }));
 // Para recibir los archivos y para levantar la ruta de encuesta
 app.use("/images", express.static(path.join(__dirname, "public", "images")));
 const encuestaRoutes = require("./routes/encuesta.routes");
+const registrosRoutes = require("./routes/registro.routes");
+app.use("/api/registros", registrosRoutes);
 app.use("/api", encuestaRoutes);
 app.use(encuestaRoutes);
 
@@ -178,7 +180,7 @@ const requireAuth = (req, res, next) => {
   if (req.path.startsWith("/api") || req.headers['content-type']?.includes('application/json')) {
     return res.status(401).json({ message: "No autorizado" });
   }
-  return res.redirect("/admin/login");
+  return res.redirect("/login.html");
 };
 
 // Middleware de validación para productos
@@ -200,7 +202,7 @@ const validateProducto = (req, res, next) => {
   next();
 };
 
-// -------- RUTAS DE API (DEBEN IR ANTES DE ARCHIVOS ESTÁTICOS) --------
+// -------- RUTAS DE API --------
 
 // -------- RUTAS DE AUTENTICACIÓN --------
 

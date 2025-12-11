@@ -499,37 +499,37 @@
         document.addEventListener('DOMContentLoaded', cargarDatos);
 
         async function cargarEncuestas(fechaDesde = null, fechaHasta = null) {
-    try {
-        let url = `${API_BASE}/registros/encuestas`;
-        const params = new URLSearchParams();
-        
-        if (fechaDesde) params.append('desde', fechaDesde);
-        if (fechaHasta) params.append('hasta', fechaHasta);
-        if (params.toString()) url += '?' + params.toString();
+            try {
+                let url = `${API_BASE}/registros/encuestas`;
+                const params = new URLSearchParams();
+                
+                if (fechaDesde) params.append('desde', fechaDesde);
+                if (fechaHasta) params.append('hasta', fechaHasta);
+                if (params.toString()) url += '?' + params.toString();
 
-        const response = await fetch(url);
-        const encuestas = await response.json();
+                const response = await fetch(url);
+                const encuestas = await response.json();
 
-        const tbody = document.querySelector('#tabla-encuestas tbody');
-        tbody.innerHTML = '';
+                const tbody = document.querySelector('#tabla-encuestas tbody');
+                tbody.innerHTML = '';
 
-        encuestas.forEach(e => {
-            const fecha = new Date(e.createdAt).toLocaleString('es-AR');
+                encuestas.forEach(e => {
+                    const fecha = new Date(e.createdAt).toLocaleString('es-AR');
 
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>${e.id}</td>
-                <td>${e.email}</td>
-                <td>${e.puntuacion}</td>
-                <td>${e.recomienda ? "Sí" : "No"}</td>
-                <td>${e.comentario || '-'}</td>
-                <td>${fecha}</td>
-            `;
-            tbody.appendChild(tr);
-        });
-    } catch (error) {
-        console.error("Error al cargar encuestas:", error);
-    }
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${e.id}</td>
+                        <td>${e.email}</td>
+                        <td>${e.puntuacion}</td>
+                        <td>${e.recomienda ? "Sí" : "No"}</td>
+                        <td>${e.comentario || '-'}</td>
+                        <td>${fecha}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (error) {
+                console.error("Error al cargar encuestas:", error);
+            }
 }
     function filtrarEncuestas() {
     const desde = document.getElementById('enc-fecha-desde').value;

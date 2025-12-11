@@ -2,6 +2,8 @@ const Venta = require("../venta");
 const Producto = require("../producto");
 const LogLogin = require("../logLogin");
 const Encuesta = require("../encuesta");
+const { Op } = require("sequelize");
+const { fn, col } = require("sequelize");
 
 module.exports = {
 
@@ -32,8 +34,15 @@ module.exports = {
     let totalEncuestas = 0, promedioPuntuacion = 0, encuestasRecomiendan = 0;
     try {
       totalEncuestas = await Encuesta.count();
-      const promedioPuntuacionRaw = await Encuesta.avg("puntuacion");
-      promedioPuntuacion = promedioPuntuacionRaw ? parseFloat(promedioPuntuacionRaw.toFixed(2)) : 0;
+
+      const promedioObj = await Encuesta.findOne({
+        attributes: [[fn("AVG", col("puntuacion")), "promedio"]]
+      });
+
+      promedioPuntuacion = promedioObj?.dataValues?.promedio
+        ? Number(promedioObj.dataValues.promedio).toFixed(2)
+        : 0;
+
       encuestasRecomiendan = await Encuesta.count({ where: { recomendar: true } });
     } catch (e) {
       console.error("Error calculando encuestas:", e);
@@ -166,9 +175,15 @@ async encuestasListado(req, res) {
 // 📊 ESTADÍSTICAS DE ENCUESTAS
 // ──────────────────────────────────────────────
 async encuestasEstadisticas(req, res) {
+  const { fn, col } = require("sequelize");
   try {
     const total = await Encuesta.count();
-    const promedio = await Encuesta.avg("puntuacion");
+
+    const promedioObj = await Encuesta.findOne({
+      attributes: [[fn("AVG", col("puntuacion")), "promedio"]]
+    });
+
+const promedioPuntuacion = promedioObj?.dataValues?.promedio || 0;
 
     const recomiendaSi = await Encuesta.count({ where: { recomendar: true } });
     const recomiendaNo = await Encuesta.count({ where: { recomendar: false } });
